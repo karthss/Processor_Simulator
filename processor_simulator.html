@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<style>
+button.btn{
+  display: inline;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border-width: 0;
+  border-radius: 30px;
+  font-weight: normal;
+  cursor: pointer;
+  -webkit-font-smoothing: inherit;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0 35px;
+    font-size: 1rem;
+    line-height: 1.6rem;
+    height: 25px;
+    min-width: 75px;
+    max-width: 500px;
+    -webkit-transition: -webkit-box-shadow 0.1s linear;
+    transition: -webkit-box-shadow 0.1s linear;
+    transition: box-shadow 0.1s linear;
+    transition: box-shadow 0.1s linear, -webkit-box-shadow 0.1s linear;
+      border: 1px solid transparent;
+      background: #abc233;
+      color: #39393b; 
+	  }
+button.btn:hover {
+  -webkit-box-shadow: 0 0 0 0 transparent;
+		  box-shadow: 0 0 0 0 transparent;
+  background-color: #626469;
+  color: #fff; }
+button.btn:focus {
+  -webkit-box-shadow: 0 0 1px 1px #7f7f86;
+		  box-shadow: 0 0 1px 1px #7f7f86;
+  border: 1px solid #fff; }
+button.btn:active {
+  -webkit-box-shadow: 0 0 0 0 transparent;
+		  box-shadow: 0 0 0 0 transparent;
+  color: #fff;
+  background-color: #626469; }
+
+button.btn_1{
+  display: inline;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border-width: 0;
+  border-radius: 30px;
+  font-weight: normal;
+  cursor: pointer;
+  -webkit-font-smoothing: inherit;
+
+    text-overflow: ellipsis;
+	
+    text-align: center;
+    vertical-align: middle;
+    padding: 0 35px;
+    font-size: 1rem;
+    line-height: 1rem;
+    height: 35px;
+    min-width: 100px;
+    max-width: 300px;
+    -webkit-transition: -webkit-box-shadow 0.1s linear;
+    transition: -webkit-box-shadow 0.1s linear;
+    transition: box-shadow 0.1s linear;
+    transition: box-shadow 0.1s linear, -webkit-box-shadow 0.1s linear;
+      border: 1px solid transparent;
+      background: #626469;
+      color: #fff; 
+	  }
+
+  
+</style>	
+</head>
+
+<body>
+<!--p>&nbsp;</p-->
+<h1>Processor Simulator</h1>
+<table>
+<tr>
+<td>
+<p>Input file:</p>
+</td>
+<td>
+<textarea cols=76>{{input_file}}</textarea>
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+</td>
+<td>
+<form action="/choose_input" method="POST" >
+<button class="btn">Select input file</button>
+</form>
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+</td>
+</tr>
+</table>
+
+<table>
+<tr align=center>
+<td>
+<table border>
+	<col width="40">
+	<col width="140">
+	<col width="60">
+<tr align=center>
+<td>
+<p>PC</p>
+</td>
+<td>
+<p>Current instruction executed:</p>
+</td>
+<td>
+<p>OPCODE</p>
+</td>
+</tr>
+
+<tr align=center>
+<td>
+<p>{{PC}}</p>
+</td>
+<td>
+<p>{{instruction}}</p>
+</td>
+<td>
+<p>{{IR}}</p>
+</td>
+</tr>
+</table>
+</td>
+<td cellspacing="50">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td>
+<td>
+<form action="/next_ins" method = "POST">
+<input type="checkbox" id="myCheck" name="interrupt" value="True">Enable Interrupt&nbsp;&nbsp;&nbsp;&nbsp;</input>
+{% if enable %}
+	<button class="btn">Next</button>
+{% else %}
+	<button class="btn_1" disabled>Next</button>
+	<p><font color="green"><b>Completed Successfully!</b></font></p>
+{% endif %}
+
+</form>
+</td>
+</tr>
+</table>
+
+<table border>
+  <col width="70">
+  <col width="50">
+  <col width="70">
+  <col width="50">
+  <col width="70">
+  <col width="50">
+<tr align=center>
+<td>
+<p>Accumulator</p>
+</td>
+<td>
+<p>{{A}}</p>
+</td>
+<td>
+<p>B register</p>
+</td>
+<td>
+<p>{{B}}</p>
+</td>
+<td>
+<p>Carry flag</p>
+</td>
+<td>
+<p>{{C}}</p>
+</td>
+</tr>
+</table>
+<table border>
+  <col width="80">
+  <col width="80">
+  <col width="80">
+  <col width="80">
+<th align="center">Registers</th>
+<tr align=center>
+<td>
+<p>R0</p>
+</td>
+<td>
+<p>R1</p>
+</td>
+<td>
+<p>R2</p>
+</td>
+<td>
+<p>R3</p>
+</td>
+</tr>
+<tr align=center>
+{% for reg in Reg %}
+<td>
+<p>{{reg}}</p>
+</td>
+{% endfor %}
+</tr>
+</table>
+
+
+
+<table border>
+  <col width="80">
+  <col width="80">
+  <col width="80">
+  <col width="80">
+<th align="center">Stack</th>
+
+<tr align=center>
+<td>
+<p>PC</p>
+</td>
+<td>
+<p>A</p>
+</td>
+<td>
+<p>B</p>
+</td>
+<td>
+<p>C</p>
+</td>
+</tr>
+
+<tr align=center>
+{% for elem in Stack %}
+<td>
+<p>{{elem}}</p>
+</td>
+{% endfor %}
+</tr>
+
+<tr align=center>
+<td>
+<p>R0</p>
+</td>
+<td>
+<p>R1</p>
+</td>
+<td>
+<p>R2</p>
+</td>
+<td>
+<p>R3</p>
+</td>
+</tr>
+
+<tr align=center>
+{% for reg in Stack_reg %}
+<td>
+<p>{{reg}}</p>
+</td>
+{% endfor %}
+</tr>
+</table>
+
+
+
+<div style="position:absolute;left:40%;top:45%;">
+<table border>
+<th align="center">Memory</th>
+<tr>
+<td>Address</td>
+<td><p>0x_0</p></td>
+<td><p>0x_1</p></td>
+<td><p>0x_2</p></td>
+<td><p>0x_3</p></td>
+<td><p>0x_4</p></td>
+<td><p>0x_5</p></td>
+<td><p>0x_6</p></td>
+<td><p>0x_7</p></td>
+<td><p>0x_8</p></td>
+<td><p>0x_9</p></td>
+<td><p>0x_a</p></td>
+<td><p>0x_b</p></td>
+<td><p>0x_c</p></td>
+<td><p>0x_d</p></td>
+<td><p>0x_e</p></td>
+<td><p>0x_f</p></td>
+</tr>
+{% for mem_array in mem %}
+<tr align=center>
+{% for mem_elem in mem_array %}
+<td><p>{{mem_elem}}</p>
+</td>
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+</div>
+
+</body>
+
+</html>
+
+<script>
+
+</script>
